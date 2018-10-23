@@ -1,5 +1,7 @@
 const CustomError = require('../../../addons/customError')
 const User = require('../../../models/user')
+const config = require('../../../config')
+const url = require('url')
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -12,11 +14,15 @@ const register = (req, res, next) => {
             User
             .create(reqUrl)
             .then(result=>{
-                return res.status(201).json({url:`http://localhost:3000/${result._id}`});
+                return res.status(201).json({
+                    url:url.resolve(config.host,result._id.toString())
+                });
             })
             .catch(err=>{ next(err) })
         }else{
-            return res.json({url:`http://localhost:3000/${result._id}`})
+            return res.json({
+                url:url.resolve(config.host,result._id.toString())
+            })
         }
     })
     .catch(err=>{ next(err) })
