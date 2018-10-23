@@ -3,6 +3,6 @@ const controller = require('./user.controller')
 
 router.post('/register.json', controller.register)
 router.get('/:id', controller.redirecter)
-// router.delete('/destroy', middle.invalidToken, controller.destroy)
+router.get('/:id/stats', controller.stats)
 
 module.exports = router

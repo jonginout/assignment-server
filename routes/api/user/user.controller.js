@@ -26,15 +26,21 @@ const redirecter = (req, res, next) => {
     .findById(id)
     .then(result=>{
         if(!result) return next(new CustomError('The URL not registered.'), 401)
-        res.redirect(result.url)
+        User.pushVisit(id)
+        return res.redirect(result.url)
     })
     .catch(err=>{
         return next(new CustomError('The URL not registered.'), 401)
     })
 }
 
+const stats = () => {
+    
+}
+
 
 module.exports = {
     register,
-    redirecter
+    redirecter,
+    stats
 }
