@@ -1,17 +1,16 @@
 const CustomError = require('../addons/customError')
 
-const requireData = (req, res, next)=>{
-    if(!Object.keys(req.body).length) return next(new CustomError('Please send any data that type is json.', 400))
+const requireUrl = (req, res, next)=>{
+    if(!req.query.url) return next(new CustomError('Please send URL data.', 400))
     else return next()
 }
 
-const invalidToken = (req, res, next)=>{
-    const token = req.body.token
-    if(!token || !req.session[token]) return next(new CustomError('Invalid token.', 403))
+const requireId = (req, res, next)=>{
+    if(!req.params.id) return next(new CustomError('Please send record id.', 400))
     else return next()
 }
 
 module.exports = {
-    requireData,
-    invalidToken,
+    requireUrl,
+    requireId
 }
