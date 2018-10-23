@@ -27,7 +27,7 @@ const redirecter = (req, res, next) => {
     .then(result=>{
         if(!result) return next(new CustomError('The URL not registered.'), 401)
         User.pushVisit(id)
-        return res.redirect(result.url)
+        return res.status(301).redirect(result.url)
     })
     .catch(err=>{
         return next(new CustomError('The URL not registered.'), 401)
@@ -35,7 +35,7 @@ const redirecter = (req, res, next) => {
 }
 
 const stats = () => {
-    
+
 }
 
 
