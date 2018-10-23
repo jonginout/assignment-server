@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const user = require('./user')
+const urlShortener = require('./url-shortener')
 
-router.use('/', user)
+router.use('/', urlShortener)
 
 module.exports = router

@@ -46,33 +46,27 @@ const stats = (req, res, next) => {
         },
         {
             $project: {
-                _id: 0,
                 visit_date: "$visits",
-                y: { $year: "$visits" },
-                m: { $month: "$visits" },
-                d: { $dayOfMonth: "$visits" },
-                h: { $hour: "$visits" },
             } 
         },
-        { $sort : { visit_date : 1} },
         { 
             $group:{ 
                 _id: {
-                        year: "$y",
-                        month: "$m",
-                        day: "$d",
-                        hour: "$h",
-                    },
+                    visit_date: { $dateToString: { format: "%Y-%m-%d %H:00:00", date: "$visit_date" } },
+                },
                 visits:{ "$sum": 1}
             }
-        }
+        },
+        {
+            $project: {
+                _id: 0,
+                at: "$_id.visit_date",
+                visits: "$visits"
+            } 
+        },
+        { $sort : { at : 1} },
     ]).exec((err, result) => {
         if(err) return next(err)
-        result.map(v=>{
-            v.at = `${v._id.year}-${v._id.month}-${v._id.day} ${v._id.hour}:00:00`
-            delete v._id
-            return v
-        })
         res.json({Stats:result})
     });
 }

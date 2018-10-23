@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const controller = require('./user.controller')
+const controller = require('./url-shortener.controller')
 const middle = require('../../middleware')
 
 router.post('/register.json', middle.requireUrl, controller.register)
