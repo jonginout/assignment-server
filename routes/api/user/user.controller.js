@@ -20,7 +20,21 @@ const register = (req, res, next) => {
     .catch(err=>{ next(err) })
 }
 
+const redirecter = (req, res, next) => {
+    const id = req.params.id
+    User
+    .findById(id)
+    .then(result=>{
+        if(!result) return next(new CustomError('The URL not registered.'), 401)
+        res.redirect(result.url)
+    })
+    .catch(err=>{
+        return next(new CustomError('The URL not registered.'), 401)
+    })
+}
+
 
 module.exports = {
     register,
+    redirecter
 }
