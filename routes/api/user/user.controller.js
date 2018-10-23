@@ -1,5 +1,7 @@
 const CustomError = require('../../../addons/customError')
 const User = require('../../../models/user')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId;
 
 const register = (req, res, next) => {
     const reqUrl = req.query.url
@@ -34,8 +36,45 @@ const redirecter = (req, res, next) => {
     })
 }
 
-const stats = () => {
-
+const stats = (req, res, next) => {
+    User.aggregate([
+        {
+            $match: { _id: ObjectId(req.params.id) }
+        },
+        {
+            $unwind: "$visits" 
+        },
+        {
+            $project: {
+                _id: 0,
+                visit_date: "$visits",
+                y: { $year: "$visits" },
+                m: { $month: "$visits" },
+                d: { $dayOfMonth: "$visits" },
+                h: { $hour: "$visits" },
+            } 
+        },
+        { $sort : { visit_date : 1} },
+        { 
+            $group:{ 
+                _id: {
+                        year: "$y",
+                        month: "$m",
+                        day: "$d",
+                        hour: "$h",
+                    },
+                visits:{ "$sum": 1}
+            }
+        }
+    ]).exec((err, result) => {
+        if(err) return next(err)
+        result.map(v=>{
+            v.at = `${v._id.year}-${v._id.month}-${v._id.day} ${v._id.hour}:00:00`
+            delete v._id
+            return v
+        })
+        res.json({Stats:result})
+    });
 }
 
 
