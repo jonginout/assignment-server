@@ -15,12 +15,14 @@ const register = (req, res, next) => {
             .create(reqUrl)
             .then(result=>{
                 return res.status(201).json({
+                    id:result._id,
                     url:url.resolve(config.host,result._id.toString())
                 });
             })
             .catch(err=>{ next(err) })
         }else{
             return res.json({
+                id:result._id,
                 url:url.resolve(config.host,result._id.toString())
             })
         }

@@ -1,6 +1,9 @@
+const HOST = 'localhost'
+// const HOST = '54.180.90.228'
+
 module.exports = {
-    host : 'http://localhost:3000/',
+    host : 'http://api.jongin.site/',
     port : process.env.PORT || 3000,
     secret: 'SeCrEtKeYfOrHaShInG',
-    mongodbUri: 'mongodb://jonginKim:chvy9968@ds235302.mlab.com:35302/jongodb'
+    mongodbUri: `mongodb://${HOST}:27017/jongodb`
 }
