@@ -20,7 +20,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With,x-access-token');
     res.header('Access-Control-Allow-Credentials', true);
     next();
-  });
+});
 
   
 app.use('/', require('./routes/api'))
