@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
       message: err.message,
       error: err
     });
-});
+}); 
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}...`)
